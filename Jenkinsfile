@@ -10,7 +10,7 @@ pipeline {
         stage('build docker image') {
    steps {
        scirpt{
-           docekrImage=docker.build registry + ":$BUILD_NUMBER"
+           dockerImage=docker.build registry + ":$BUILD_NUMBER"
        }
             }
         } 
