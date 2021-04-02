@@ -1,17 +1,27 @@
 pipeline {
-    agent any
+    environment{
+        registry="13007/myfirst"
+        registryCredential="13007"
+        dockerImage=""
+    }
+    
+        agent any
     stages {
         stage('build docker image') {
    steps {
-              sh 'sudo docker build  -t 13007/myfirst:1 .'
+       scirpt{
+           docekrImage=docker.build registry + ":$BUILD_NUMBER"
+       }
             }
         } 
 stage('push docker image') {
    steps {
-    withCredentials([string(credentialsId: '13007', variable: 'DOCKER_HUB_PWD')]) {
-                sh "docker push -u 13007 -p ${DOCKER_HUB_PWD} 13007/myfirst:1"
-    }
+       script{
+           docker.withRegistry('', registryCredential){
+               dockerImage.push()
+           }
    }
         }
     }
+}
 }
